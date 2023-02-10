@@ -1,12 +1,10 @@
-﻿using System;
-namespace ShowMe.Models
-{
-	public class Screen
-	{
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public int Capacity { get; set; }
-        public bool Is3D { get; set; }
-    }
+﻿namespace ShowMe.Models;
+public class Screen {
+	public Guid Id { get; set; }
+	public string Name { get; set; }
+	public short NumberOfRows { get; set; }
+	public short NumberOfColumns { get; set; }
+	public Guid TheaterId { get; set; }
+	public DateTime CreatedOn { get; set; }
+	public DateTime UpdatedOn { get; set; }
 }
-
