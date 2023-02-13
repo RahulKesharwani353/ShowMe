@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShowMe;
 using ShowMe.Data;
+using ShowMe.Interface;
+using ShowMe.Migrations;
+using ShowMe.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<ITheaterRepository, TheaterRepository>();
 
 var app = builder.Build();
 
