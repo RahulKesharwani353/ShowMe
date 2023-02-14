@@ -47,8 +47,8 @@ namespace ShowMe.Controllers
         public IActionResult CreateShow([FromBody] ShowDto showDto  , [FromQuery]Guid MovieId, [FromQuery] Guid ScreenId)
         {
             var show = mapper.Map<Show>(showDto);
-            //show.Movie = movieRepository.GetMovie(MovieId);
-            //show.Screen = screenRepository.GetScreen(ScreenId);
+            show.Movie = movieRepository.GetMovie(MovieId);
+            show.Screen = screenRepository.GetScreen(ScreenId);
             if (!showRepository.CreateShow(show))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
