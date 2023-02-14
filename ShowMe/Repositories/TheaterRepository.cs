@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using ShowMe.Data;
 using ShowMe.Interface;
 using ShowMe.Migrations;
@@ -21,9 +22,20 @@ namespace ShowMe.Repositories
             return save();
         }
 
+        public Theater GetTheater(Guid id)
+        {
+            var theater = dataContext.Theaters.FirstOrDefault(p => p.Id == id);
+            return theater;
+        }
+
         public ICollection<Theater> GetTheaters()
         {
-            ICollection<Theater> theaters = dataContext.Theaters.OrderBy(p => p.Name).ToList();
+            var theaters =
+                dataContext
+                .Theaters
+                .Include(p => p.Screens)
+                .OrderBy(p => p.Name)
+                .ToList();
             return theaters;
         }
 
