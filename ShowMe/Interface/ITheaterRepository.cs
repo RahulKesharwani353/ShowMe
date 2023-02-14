@@ -1,11 +1,12 @@
 ﻿using System;
 using ShowMe.Models;
 
-namespace ShowMe.Migrations
+namespace ShowMe.Interface
 {
 	public interface ITheaterRepository
 	{
         ICollection<Theater> GetTheaters();
+        Theater GetTheater(Guid id);
         bool CreateTheaters(Theater theater);
     }
 }
