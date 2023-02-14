@@ -10,6 +10,7 @@ namespace ShowMe.Helper
 		public MapProfile()
 		{
             CreateMap<ScreenDto, Screen>();
+            CreateMap<ShowDto, Show>();
         }
 	}
 }

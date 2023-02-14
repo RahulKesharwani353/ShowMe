@@ -24,6 +24,7 @@ builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<ITheaterRepository, TheaterRepository>();
 builder.Services.AddScoped<IScreenRepository, ScreenRepository>();
+builder.Services.AddScoped<IShowRepository, ShowRepository>();
 
 
 var app = builder.Build();
