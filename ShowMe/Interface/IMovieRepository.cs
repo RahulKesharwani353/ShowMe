@@ -6,8 +6,8 @@ namespace ShowMe.Interface
 	public interface IMovieRepository
 	{
 		ICollection<Movie> GetMovies();
-		Movie GetMovie(int id);
-		Movie GetMovie(String Name);
+		Movie GetMovie(Guid id);
+		Movie GetMovieByName(String Name);
 		bool CreateMovie(Movie movie);
 	}
 }

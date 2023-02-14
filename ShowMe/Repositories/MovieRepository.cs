@@ -26,12 +26,15 @@ namespace ShowMe.Repositories
             return _context.SaveChanges() > 0;
         }
 
-        public Movie GetMovie(int id)
+        public Movie GetMovie(Guid id)
         {
-            throw new NotImplementedException();
+            var movie = _context.Movies
+                .FirstOrDefault(p => p.Id == id);
+            return movie;
+     
         }
 
-        public Movie GetMovie(string Name)
+        public Movie GetMovieByName(string Name)
         {
             throw new NotImplementedException();
         }

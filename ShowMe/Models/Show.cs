@@ -6,7 +6,8 @@ public class Show {
 	public Guid Id { get; set; }
 	public Movie Movie { get; set; }
 	public Screen Screen { get; set; }
-	public DateTime StartTime { get; set; }
+	public TimeOnly StartTime { get; set; }
+	public DateOnly Date { get; set; }
 	public DateTime CreatedOn { get; set; }
 	public DateTime UpdatedOn { get; set; }
 }

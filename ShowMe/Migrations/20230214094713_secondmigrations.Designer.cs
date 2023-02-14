@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShowMe.Data;
@@ -11,9 +12,11 @@ using ShowMe.Data;
 namespace ShowMe.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230214094713_secondmigrations")]
+    partial class secondmigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,10 +116,10 @@ namespace ShowMe.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("MovieId")
+                    b.Property<Guid?>("MovieId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ScreenId")
+                    b.Property<Guid?>("ScreenId")
                         .HasColumnType("uuid");
 
                     b.Property<TimeOnly>("StartTime")
@@ -181,15 +184,11 @@ namespace ShowMe.Migrations
                 {
                     b.HasOne("ShowMe.Models.Movie", "Movie")
                         .WithMany("Shows")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovieId");
 
                     b.HasOne("ShowMe.Models.Screen", "Screen")
                         .WithMany("Shows")
-                        .HasForeignKey("ScreenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ScreenId");
 
                     b.Navigation("Movie");
 

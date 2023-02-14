@@ -41,7 +41,7 @@ namespace ShowMe.Controllers
             return Ok(screens);
         }
 
-        [HttpGet("/{ScreenId}")]
+        [HttpGet("{ScreenId}")]
         [ProducesResponseType(200, Type = typeof(Movie))]
         public IActionResult GetScreen([FromRoute] Guid ScreenId)
         {
@@ -53,8 +53,8 @@ namespace ShowMe.Controllers
             return Ok(screens);
         }
 
-        [HttpPost("/{TheaterId}")]
-        public IActionResult CreateScreen([FromBody] ScreenDto screenDto, [FromRoute] Guid TheaterId) {
+        [HttpPost]
+        public IActionResult CreateScreen([FromBody] ScreenDto screenDto, [FromQuery] Guid TheaterId) {
 
             var screen = mapper.Map<Screen>(screenDto);
             screen.Theater = theaterRepository.GetTheater(TheaterId);
