@@ -1,44 +1,35 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShowMe.Data;
 using ShowMe.Interface;
 using ShowMe.Models;
 
-namespace ShowMe.Repositories
-{
-	public class ShowRepository : IShowRepository
-	{
-        private readonly DataContext context;
+namespace ShowMe.Repositories;
 
-        public ShowRepository(DataContext context)
-		{
-            this.context = context;
-        }
+public class ShowRepository : IShowRepository {
+	private readonly DataContext _context;
 
-        public bool CreateShow(Show show)
-        {
-             context.Add(show);
-            return save();
-        }
+	public ShowRepository(DataContext context) {
+		_context = context;
+	}
 
-        public Show GetShow(Guid id)
-        {
-            return context.Shows
-                .FirstOrDefault(p => p.Id == id);
-        }
+	public bool CreateShow(Show show) {
+		_context.Add(show);
+		return Save();
+	}
 
-        public ICollection<Show> GetShows()
-        {
-            return context.Shows
-                .Include(p => p.Movie)
-                .Include(p => p.Screen)
-                .ThenInclude(p=> p.Theater)
-                .ToList();
-        }
-        private bool save()
-        {
-            return context.SaveChanges() > 0;
-        }
-    }
+	public Show GetShow(Guid id) {
+		return _context.Shows.FirstOrDefault(p => p.Id == id);
+	}
+
+	public ICollection<Show> GetShows() {
+		return _context.Shows
+			.Include(p => p.Movie)
+			.Include(p => p.Screen)
+			.ThenInclude(p => p.Theater)
+			.ToList();
+	}
+
+	public bool Save() {
+		return _context.SaveChanges() > 0;
+	}
 }
-

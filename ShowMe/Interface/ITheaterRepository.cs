@@ -1,13 +1,16 @@
-﻿using System;
-using ShowMe.Models;
+﻿using ShowMe.Models;
 
-namespace ShowMe.Interface
-{
-	public interface ITheaterRepository
-	{
-        ICollection<Theater> GetTheaters();
-        Theater GetTheater(Guid id);
-        bool CreateTheaters(Theater theater);
-    }
+namespace ShowMe.Interface;
+
+public interface ITheaterRepository {
+	// Get
+	ICollection<Theater> GetTheaters();
+	Theater GetTheater(Guid theaterId);
+	ICollection<object> GetTheaterMovies(Guid theaterId);
+	ICollection<object> GetTheatersByCity(string city);
+
+	// Create
+	bool CreateTheaters(Theater theater);
+
+	bool Save();
 }
-

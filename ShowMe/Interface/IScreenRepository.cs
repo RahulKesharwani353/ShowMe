@@ -1,13 +1,14 @@
-﻿using System;
-using ShowMe.Models;
+﻿using ShowMe.Models;
 
-namespace ShowMe.Interface
-{
-	public interface IScreenRepository
-	{
-		ICollection<Screen> GetScreens();
-		Screen GetScreen(Guid id);
-		bool CreateScreen(Guid theaterId, Screen screen);
-	}
+namespace ShowMe.Interface;
+
+public interface IScreenRepository {
+	// Get
+	ICollection<Screen> GetScreens();
+	Screen GetScreen(Guid id);
+
+	// Create
+	bool CreateScreen(Guid theaterId, Screen screen);
+
+	bool Save();
 }
-

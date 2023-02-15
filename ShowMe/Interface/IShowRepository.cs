@@ -1,13 +1,14 @@
-﻿using System;
-using ShowMe.Models;
+﻿using ShowMe.Models;
 
-namespace ShowMe.Interface
-{
-	public interface IShowRepository
-	{
-		ICollection<Show> GetShows();
-		Show GetShow(Guid id);
-		bool CreateShow(Show show);
-	}
+namespace ShowMe.Interface;
+
+public interface IShowRepository {
+	// Get
+	ICollection<Show> GetShows();
+	Show GetShow(Guid id);
+
+	// Create
+	bool CreateShow(Show show);
+
+	bool Save();
 }
-

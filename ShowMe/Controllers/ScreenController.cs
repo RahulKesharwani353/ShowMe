@@ -1,72 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShowMe.Dto;
 using ShowMe.Interface;
 using ShowMe.Models;
-using ShowMe.Repositories;
-using ShowMe.Migrations;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+namespace ShowMe.Controllers;
 
-namespace ShowMe.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ScreenController : Controller
-    {
-        private readonly IScreenRepository screenRepository;
-        private readonly ITheaterRepository theaterRepository;
-        private readonly IMapper mapper;
+[Route("api/[controller]")]
+[ApiController]
+public class ScreenController : Controller {
+	private readonly IScreenRepository _screenRepository;
+	private readonly ITheaterRepository _theaterRepository;
+	private readonly IMapper _mapper;
 
-        public ScreenController(IScreenRepository screenRepository,ITheaterRepository theaterRepository , IMapper mapper)
-        {
-            this.screenRepository = screenRepository;
-            this.theaterRepository = theaterRepository;
-            this.mapper = mapper;
-        }
+	public ScreenController(IScreenRepository screenRepository, ITheaterRepository theaterRepository, IMapper mapper) {
+		_screenRepository = screenRepository;
+		_theaterRepository = theaterRepository;
+		_mapper = mapper;
+	}
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
-        public IActionResult GetAllScreenLists()
-        {
-            var screens = screenRepository.GetScreens();
+	[HttpGet]
+	[ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
+	public IActionResult GetAllScreenLists() {
+		var screens = _screenRepository.GetScreens();
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+		if (!ModelState.IsValid)
+			return BadRequest(ModelState);
 
-            return Ok(screens);
-        }
+		return Ok(screens);
+	}
 
-        [HttpGet("{ScreenId}")]
-        [ProducesResponseType(200, Type = typeof(Movie))]
-        public IActionResult GetScreen([FromRoute] Guid ScreenId)
-        {
-            var screens = screenRepository.GetScreen(ScreenId);
+	[HttpGet("{ScreenId}")]
+	[ProducesResponseType(200, Type = typeof(Movie))]
+	public IActionResult GetScreen([FromRoute] Guid ScreenId) {
+		var screens = _screenRepository.GetScreen(ScreenId);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+		if (!ModelState.IsValid)
+			return BadRequest(ModelState);
 
-            return Ok(screens);
-        }
+		return Ok(screens);
+	}
 
-        [HttpPost]
-        public IActionResult CreateScreen([FromBody] ScreenDto screenDto, [FromQuery] Guid TheaterId) {
+	[HttpPost]
+	public IActionResult CreateScreen([FromBody] ScreenDto screenDto, [FromQuery] Guid TheaterId) {
 
-            var screen = mapper.Map<Screen>(screenDto);
-            screen.Theater = theaterRepository.GetTheater(TheaterId);
+		var screen = _mapper.Map<Screen>(screenDto);
+		screen.Theater = _theaterRepository.GetTheater(TheaterId);
 
-            if (!screenRepository.CreateScreen(screen.Id, screen))
-            {
-                ModelState.AddModelError("", "Something went wrong while savin");
-                return StatusCode(500, ModelState);
-            }
-            return Ok("Successfully created");
-        }
-        
-    }
+		if (!_screenRepository.CreateScreen(screen.Id, screen)) {
+			ModelState.AddModelError("", "Something went wrong while savin");
+			return StatusCode(500, ModelState);
+		}
+		return Ok("Successfully created");
+	}
+
 }
-
