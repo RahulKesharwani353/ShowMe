@@ -7,7 +7,8 @@ namespace ShowMe.Interface
 	{
 		ICollection<Movie> GetMovies();
 		Movie GetMovie(Guid id);
-		Movie GetMovieByName(String Name);
+		object getMovieDetails(Guid id);
+        ICollection<object> GetMovieByName(String Name);
 		bool CreateMovie(Movie movie);
 	}
 }
