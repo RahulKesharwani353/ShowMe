@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using ShowMe.Data;
 using ShowMe.Interface;
 using ShowMe.Models;
@@ -36,20 +37,46 @@ namespace ShowMe.Repositories
 
         public object getMovieDetails(Guid id)
         {
-            ///Gadbadi haiii bhai........ß
-            //var movies = from s in _context.Shows
-            //             join m in _context.Movies on s.Movie.Id equals id
-            //             join scr in _context.Screens on s.Screen.Id equals scr.Id
-            //             join t in _context.Theaters on scr.Theater.Id equals t.Id
-            //             select new { m.Id, m.Title, s.Date, t.Name };
 
-            var movies = from t in _context.Theaters
-                         join scr in _context.Screens on t.Id equals scr.Theater.Id
-                         join s in _context.Shows on scr.Id equals s.Screen.Id
-                         join m in _context.Movies on s.Movie.Id equals id
-                         select new {m.Id, m.Title, t.Name};
+            var movies = from s in _context.Shows
+                         join m in _context.Movies on s.Movie.Id equals m.Id
+                         join scr in _context.Screens on s.Screen.Id equals scr.Id
+                         join t in _context.Theaters on scr.Theater.Id equals t.Id
+                         where m.Id == id
+                         select new { m.Id, m.Title, t.Name };
 
             return movies.Cast<object>().ToList();
+        }
+
+        public ICollection<object> getMovieShows(Guid MovieId, Guid TheaterId)
+        {
+
+            var shows = _context.Shows
+                .Include(p => p.Screen)
+                .ThenInclude(p => p.Theater)
+                .Include(p => p.Movie)
+                .Where(p => p.Movie.Id == MovieId && p.Screen.Theater.Id==TheaterId)
+                .Select(p => new
+                {
+                    Id = p.Id,
+                    StartTime = p.StartTime,
+                    Date = p.Date,
+                    Theater = p.Screen.Theater.Name,
+                    Screen = new
+                    {
+                        Id = p.Screen.Id,
+                        Name= p.Screen.Name
+                    },
+                    Movie = new
+                    {
+                        Id = p.Movie.Id,
+                        Title = p.Movie.Title
+                    }
+                    
+                })
+                .ToList();
+
+            return shows.Cast<object>().ToList();
         }
 
         public ICollection<object> GetMovieByName(string searchQuery)

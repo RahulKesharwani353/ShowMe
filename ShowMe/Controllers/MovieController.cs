@@ -75,6 +75,21 @@ namespace ShowMe.Controllers
             return Ok(movies);
         }
 
+        [HttpGet("{MovieId}/shows")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
+        public IActionResult GetMovieShows([FromRoute] Guid MovieId, [FromQuery] Guid TheaterId)
+        {
+            var movies = movieRepository.getMovieShows(MovieId, TheaterId);
+
+            if (movies == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(movies);
+        }
+
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
