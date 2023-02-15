@@ -22,7 +22,7 @@ namespace ShowMe.Controllers
             this.movieRepository = movieRepository;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
         public IActionResult GetMovieList()
         {
@@ -33,6 +33,19 @@ namespace ShowMe.Controllers
 
             return Ok(movies);
         }
+
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
+        public IActionResult GetMovieListByName([FromQuery]String search)
+        {
+            var movies = movieRepository.GetMovieByName(search);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(movies);
+        }
+
         [HttpGet("{MovieId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
         public IActionResult GetMovie([FromRoute]Guid MovieId)
@@ -47,6 +60,21 @@ namespace ShowMe.Controllers
 
             return Ok(movies);
         }
+        [HttpGet("{MovieId}/theaters")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Movie>))]
+        public IActionResult GetMovieTheaters([FromRoute] Guid MovieId)
+        {
+            var movies = movieRepository.getMovieDetails(MovieId);
+
+            if (movies == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(movies);
+        }
+
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
