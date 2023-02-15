@@ -1,16 +1,17 @@
-﻿using System;
-using ShowMe.Models;
+﻿using ShowMe.Models;
 
-namespace ShowMe.Interface
-{
-	public interface IMovieRepository
-	{
-		ICollection<Movie> GetMovies();
-		Movie GetMovie(Guid id);
-		object getMovieDetails(Guid id);
-        ICollection<object> getMovieShows(Guid MovieId, Guid TheaterId);
-        ICollection<object> GetMovieByName(String Name);
-		bool CreateMovie(Movie movie);
-	}
+namespace ShowMe.Interface;
+
+public interface IMovieRepository {
+	// Get
+	ICollection<Movie> GetMovies();
+	Movie GetMovie(Guid id);
+	ICollection<object> GetMovieTheaters(Guid id);
+	ICollection<object> GetMovieShows(Guid MovieId, Guid TheaterId);
+	ICollection<object> GetMoviesByName(string Name);
+
+	// Create
+	bool CreateMovie(Movie movie);
+
+	bool Save();
 }
-

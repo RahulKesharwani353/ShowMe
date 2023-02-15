@@ -1,45 +1,31 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShowMe.Data;
 using ShowMe.Interface;
 using ShowMe.Models;
 
-namespace ShowMe.Repositories
-{
-	public class ScreenRepository : IScreenRepository
-	{
-        private readonly DataContext context;
+namespace ShowMe.Repositories;
 
-        public ScreenRepository(DataContext context)
-		{
-            this.context = context;
-        }
+public class ScreenRepository : IScreenRepository {
+	private readonly DataContext _context;
 
-        public bool CreateScreen(Guid theaterId, Screen screen)
-        {
-            context.Add(screen);
-            return save();
-        }
+	public ScreenRepository(DataContext context) {
+		_context = context;
+	}
 
-        public Screen GetScreen(Guid id)
-        {
-            return context.Screens
-                .Include(p => p.Theater)
-            .FirstOrDefault(p=> p.Id == id);
-        }
+	public bool CreateScreen(Guid theaterId, Screen screen) {
+		_context.Add(screen);
+		return Save();
+	}
 
-        public ICollection<Screen> GetScreens()
-        {
-            return context.Screens
-                .Include(p => p.Theater)
-            .ToList();
-            return context.Screens.ToList();
-        }
+	public Screen GetScreen(Guid id) {
+		return _context.Screens.Include(p => p.Theater).FirstOrDefault(p => p.Id == id);
+	}
 
-        private bool save()
-        {
-            return context.SaveChanges() > 0;
-        }
-    }
+	public ICollection<Screen> GetScreens() {
+		return _context.Screens.Include(p => p.Theater).ToList();
+	}
+
+	public bool Save() {
+		return _context.SaveChanges() > 0;
+	}
 }
-

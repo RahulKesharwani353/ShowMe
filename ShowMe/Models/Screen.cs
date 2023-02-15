@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShowMe.Models;
+
 public class Screen {
 	[Key]
 	public Guid Id { get; set; }
