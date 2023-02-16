@@ -35,7 +35,18 @@ public class ShowController : Controller {
 		return Ok(shows);
 	}
 
-	[HttpPost]
+	[HttpGet("{showId}")]
+	public IActionResult GetShow(Guid showId)
+	{
+		var shows = _showRepository.GetShow(showId);
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+		return Ok(shows);
+	}
+
+    [HttpPost]
 	public IActionResult CreateShow([FromBody] ShowDto showDto, [FromQuery] Guid MovieId, [FromQuery] Guid ScreenId) {
 		var show = _mapper.Map<Show>(showDto);
 		show.Movie = _movieRepository.GetMovie(MovieId);
