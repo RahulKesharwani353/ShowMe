@@ -30,10 +30,11 @@ public class MovieRepository : IMovieRepository {
 		.Include(x => x.Movie)
 		.Where(x => x.Movie.Id == id)
 		.Select(x => new {
-			Id = x.Id,
+			Id = x.Screen.Theater.Id,
 			Title = x.Movie.Title,
 			Theater = x.Screen.Theater.Name
-		}).Cast<object>().ToList();
+		}).Distinct()
+		.Cast<object>().ToList();
 
 		// return (from s in _context.Shows
 		// 		  join m in _context.Movies on s.Movie.Id equals m.Id

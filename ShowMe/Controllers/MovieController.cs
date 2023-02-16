@@ -27,15 +27,35 @@ public class MovieController : Controller {
 		return Ok(movies);
 	}
 
-	[HttpGet("search/{search}")]
+	[HttpGet("search")]
 	[ProducesResponseType(200)]
-	public IActionResult GetMoviesByName(string search) {
-		var movies = _movieRepository.GetMoviesByName(search);
+	public IActionResult GetMoviesByName([FromQuery]string search) {
 
-		if (!ModelState.IsValid)
-			return BadRequest(ModelState);
 
-		return Ok(movies);
+		if (search == null || search == "")
+		{
+			return BadRequest(new
+			{
+				message = "Please enter search query"
+			});
+		}
+		else
+		{
+			var movies = _movieRepository.GetMoviesByName(search);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+			if (movies == null)
+			{
+				return NotFound(
+					new
+					{
+                        message = "No item Found"
+                    });
+			}
+
+            return Ok(movies);
+        }
 	}
 
 	[HttpGet("{MovieId}")]

@@ -26,14 +26,34 @@ public class TheaterController : Controller {
 		return Ok(theaters);
 	}
 
-	[HttpGet("{city}")]
-	public IActionResult GetTheatersByCity(string city) {
-		var theaters = _theaterRepository.GetTheatersByCity(city);
+	[HttpGet("search")]
+	public IActionResult GetTheatersByCity([FromQuery]string city) {
 
-		if (!ModelState.IsValid) {
-			return BadRequest(ModelState);
-		}
-		return Ok(theaters);
+        if (city == null || city == "")
+        {
+            return BadRequest(new
+            {
+                message = "Please enter city"
+            });
+        }
+        else
+        {
+            var theaters = _theaterRepository.GetTheatersByCity(city);
+
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			if (theaters.Count == 0)
+                return NotFound(
+                    new
+                    {
+                        message = "No item Found"
+                    });
+            return Ok(theaters);
+        }
+		
 	}
 
 	[HttpGet("{theaterId}/movies")]
@@ -43,7 +63,15 @@ public class TheaterController : Controller {
 		if (!ModelState.IsValid) {
 			return BadRequest(ModelState);
 		}
-		return Ok(movies);
+
+		if (movies.Count == 0)
+            return NotFound(
+                    new
+                    {
+                        message = "No item Found"
+                    });
+
+        return Ok(movies);
 	}
 
 	[HttpPost]
